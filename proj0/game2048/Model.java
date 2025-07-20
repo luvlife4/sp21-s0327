@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @luvlife4
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -94,8 +94,20 @@ public class Model extends Observable {
         setChanged();
     }
 
+    public int helper(int col, int row, Board board) {
+        int flag0 = 0;
+//        if (board.tile(col,row)==null)
+//            return 0;
+        for (int i = row; i < board.size() - 1; i++) {
+            if (board.tile(col, i + 1) == null) {
+                flag0 += 1;
+            } else break;
+        }
+        return flag0;
+    }
+
     /** Tilt the board toward SIDE. Return true iff this changes the board.
-     *
+      1*
      * 1. If two Tile objects are adjacent in the direction of motion and have
      *    the same value, they are merged into one Tile of twice the original
      *    value and that new value is added to the score instance variable
@@ -109,11 +121,35 @@ public class Model extends Observable {
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
-
+        board.setViewingPerspective(side);
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = board.size()-1; j >=0; j--) {
+                if (board.tile(i,j)!=null){
+                    board.move(i,j+helper(i,j,board),tile(i,j));
+                    changed=true;
+                }
+            }
+        }
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = board.size()-1; j >=1; j--) {
+                if (tile(i,j)!=null){
+                    if (tile(i,j-1)!=null&&tile(i,j)!=null&&
+                            tile(i,j-1).value()==tile(i,j).value()&&
+                            board.move(i, j, tile(i, j-1))) {
+                        this.score = this.score + tile(i, j).value();
+                        if (j - 2 >= 0 && tile(i, j - 2) != null && tile(i, j - 1) == null) {
+                            board.move(i, j - 1, tile(i, j - 2));
+//                        if (j - 3 >= 0 && tile(i, j - 3) != null && tile(i, j - 3) == null) {
+//                            board.move(i, j - 2, tile(i, j - 3));
+                        }
+                    }
+                }
+            }
+        }
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
@@ -138,6 +174,13 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        for (int i = 0;i < b.size();i++){
+            for (int j = 0;j < b.size();j++){
+                if (b.tile(i,j)==null){
+                    return true;
+                }
+            };
+        };
         return false;
     }
 
@@ -148,6 +191,16 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        for (int i = 0;i < b.size();i++){
+            for (int j = 0;j < b.size();j++){
+                if (b.tile(i,j)==null){
+                    continue;
+                }
+                else if (b.tile(i,j).value()==MAX_PIECE){
+                    return true;
+                }
+            };
+        };
         return false;
     }
 
@@ -159,6 +212,25 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if (Model.emptySpaceExists(b)) {
+            return true;
+        }
+        for (int i = 0;i < b.size()-1;i++){
+                for (int j = 0;j < b.size()-1;j++){
+                    if (b.tile(i,j).value()==b.tile(i,j+1).value()||b.tile(i,j).value()==b.tile(i+1,j).value()) {
+                        return true;
+                    }
+                };
+            }
+        for (int i = 0; i < b.size()-1; i++) {
+            if (b.tile(i, b.size()-1).value()==b.tile(i+1,b.size()-1).value()) {
+                return true;
+            }
+            if (b.tile(b.size()-1,i).value()==b.tile(b.size()-1,i+1).value()) {
+                return true;
+            }
+        }
+
         return false;
     }
 
