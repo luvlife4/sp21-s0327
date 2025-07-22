@@ -1,5 +1,9 @@
 package IntList;
 
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+
 public class IntListExercises {
 
     /**
@@ -10,9 +14,12 @@ public class IntListExercises {
      */
     public static void addConstant(IntList lst, int c) {
         IntList head = lst;
-        while (head.rest != null) {
+        if (head.rest != null) {
             head.first += c;
+        }
+        while (head.rest != null) {
             head = head.rest;
+            head.first += c;
         }
     }
 
@@ -50,6 +57,9 @@ public class IntListExercises {
      *  the first digit of x.
      */
     public static boolean firstDigitEqualsLastDigit(int x) {
+        if (x%10 == 0) {
+            return false;
+        }
         int lastDigit = x % 10;
         while (x > 10) {
             x = x / 10;
@@ -67,16 +77,20 @@ public class IntListExercises {
      */
     public static boolean squarePrimes(IntList lst) {
         // Base Case: we have reached the end of the list
-        if (lst == null) {
-            return false;
+//        if (lst == null) {
+//            return false;
+//        }
+        IntList pointer=lst;
+        boolean flag=false;
+        while (pointer.rest != null) {
+            boolean currElemIsPrime = Primes.isPrime(pointer.first);
+            if (currElemIsPrime) {
+                pointer.first *= pointer.first;
+                flag=true;
+            }
+            pointer = pointer.rest;
         }
-
-        boolean currElemIsPrime = Primes.isPrime(lst.first);
-
-        if (currElemIsPrime) {
-            lst.first *= lst.first;
-        }
-
-        return currElemIsPrime || squarePrimes(lst.rest);
+        return flag;
     }
 }
+
