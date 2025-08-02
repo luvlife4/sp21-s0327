@@ -22,7 +22,7 @@ public class LinkedListDeque<just_stay> {
     public node<just_stay> theTail;
     int size;
 
-    //初始化了一个列表
+    //初始化了一个列表,列表构造函数
     public LinkedListDeque() {
         just_stay x = null;
         this.theHead = new node<just_stay>(x,null,null);
@@ -34,6 +34,7 @@ public class LinkedListDeque<just_stay> {
         this.size = 0;
     }
 
+    //取出一个元素
     public just_stay get(int x) {
         node<just_stay> pointer = null;
         pointer.next = theHead;
@@ -42,6 +43,7 @@ public class LinkedListDeque<just_stay> {
         }
         return pointer.item;
     }
+
 
     public int size() {
         return size;
@@ -72,7 +74,7 @@ public class LinkedListDeque<just_stay> {
         node<just_stay> theNewOne = new node(x, theTail, theTail.prev);
         theTail.prev.next = theNewOne;
         theTail.prev = theNewOne;
-        size = size + 1;
+        size ++;
     }
 
     public just_stay removeFirst() {
