@@ -1,6 +1,7 @@
 package deque;
 
-public class ArrayDeque<glorp>{
+
+public class ArrayDeque<glorp> implements Deque<glorp>{
     public glorp[] items;
     public int size = 0;
 
@@ -21,10 +22,12 @@ public class ArrayDeque<glorp>{
         items = (glorp[]) new Object[8];
     }
 
+    @Override
     public glorp get(int x) {
         return items[x];
     }
 
+    @Override
     public int size() {
         return size;
     }
@@ -43,7 +46,8 @@ public class ArrayDeque<glorp>{
         return false;
     }
 
-    public glorp addFirst(glorp x) {
+    @Override
+    public void addFirst(glorp x) {
         if (size >= items.length && size != 0) {
             addSize();
         }
@@ -55,10 +59,10 @@ public class ArrayDeque<glorp>{
         a[0] = x;
         items=a;
         size++;
-        return x;
     }
 
-    public glorp addLast(glorp x) {
+    @Override
+    public void addLast(glorp x) {
         if (size >=items.length&&size!=0) {
             addSize();
         }
@@ -67,9 +71,9 @@ public class ArrayDeque<glorp>{
         }
         items[size] = x;
         size++;
-        return x;
     }
 
+    @Override
     public glorp removeFirst() {
         if(size==0){
             return null;
@@ -82,12 +86,17 @@ public class ArrayDeque<glorp>{
         return x;
     }
 
+    @Override
     public glorp removeLast() {
         if(size==0){
             return null;
         }
         size--;
         return items[size];
+    }
+    @Override
+    public void resetItem(int index,glorp x){
+            items[index-1]=x;
     }
 
 }

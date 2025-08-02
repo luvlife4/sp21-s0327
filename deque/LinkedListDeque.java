@@ -1,6 +1,6 @@
 package deque;
 
-public class LinkedListDeque<just_stay> {
+public class LinkedListDeque<just_stay> implements Deque<just_stay> {
 
 
     //    内部类，定义了节点
@@ -35,9 +35,10 @@ public class LinkedListDeque<just_stay> {
     }
 
     //取出一个元素
+    @Override
     public just_stay get(int x) {
         node<just_stay> pointer = null;
-        pointer.next = theHead;
+        pointer = theHead;
         for (int i = 0; i <= x; i++) {
             pointer = pointer.next;
         }
@@ -45,6 +46,7 @@ public class LinkedListDeque<just_stay> {
     }
 
 
+    @Override
     public int size() {
         return size;
     }
@@ -63,6 +65,7 @@ public class LinkedListDeque<just_stay> {
         System.out.println();
     }
 
+    @Override
     public void addFirst(just_stay x) {
         node<just_stay> theNewOne = new node(x, theHead.next, theHead);
         theHead.next.prev = theNewOne;
@@ -70,6 +73,7 @@ public class LinkedListDeque<just_stay> {
         size += 1;
     }
 
+    @Override
     public void addLast(just_stay x) {
         node<just_stay> theNewOne = new node(x, theTail, theTail.prev);
         theTail.prev.next = theNewOne;
@@ -77,6 +81,7 @@ public class LinkedListDeque<just_stay> {
         size ++;
     }
 
+    @Override
     public just_stay removeFirst() {
         just_stay x = theHead.next.item;
         theHead.next = theHead.next.next;
@@ -88,6 +93,7 @@ public class LinkedListDeque<just_stay> {
         return null;
     }
 
+    @Override
     public just_stay removeLast() {
         just_stay x = theTail.prev.item;
         theTail.prev = theTail.prev.prev;
@@ -97,6 +103,15 @@ public class LinkedListDeque<just_stay> {
             return x;
         }
         return null;
+    }
+
+    @Override
+    public void resetItem(int index,just_stay x){
+        node<just_stay> pointer=theHead;
+        for (int i = 0; i < index; i++) {
+            pointer=pointer.next;
+        }
+        pointer.item=x;
     }
 
 }
